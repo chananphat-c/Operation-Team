@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Day in the Life of the Operations Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange-deep: #E05A00;
+    --orange-mid: #F47820;
+    --orange-light: #FF9A3C;
+    --orange-glow: #FFB56B;
+    --orange-pale: #FFF3E8;
+    --blue-deep: #0A2D6E;
+    --blue-mid: #1549A8;
+    --blue-bright: #2563EB;
+    --blue-light: #DBEAFE;
+    --white: #FFFFFF;
+    --off-white: #FAFAFA;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-300: #CBD5E1;
+    --gray-500: #64748B;
+    --gray-700: #334155;
+    --gray-900: #0F172A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--gray-900);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 45, 110, 0.97);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 60px;
+    border-bottom: 2px solid var(--orange-mid);
+  }
+  .nav-logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800; font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.04em;
+  }
+  .nav-logo span { color: var(--orange-light); }
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none; font-size: 13px; font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #0F3B8A 45%, #1A2F6B 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 48px 60px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 80% 30%, rgba(244,120,32,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 10% 80%, rgba(37,99,235,0.25) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    max-width: 1200px; width: 100%;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(244,120,32,0.2);
+    border: 1px solid rgba(244,120,32,0.5);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--orange-glow);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero-title .accent { color: var(--orange-light); }
+  .hero-sub {
+    font-size: 17px; color: rgba(255,255,255,0.65);
+    line-height: 1.7; margin-bottom: 36px;
+    max-width: 440px;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--orange-mid);
+    color: var(--white);
+    font-weight: 700; font-size: 14px; letter-spacing: 0.04em;
+    padding: 14px 28px; border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .hero-cta:hover { background: var(--orange-deep); transform: translateY(-1px); }
+
+  /* Right side — stat cards */
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 28px 24px;
+    backdrop-filter: blur(4px);
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: rgba(244,120,32,0.4); }
+  .stat-card.wide { grid-column: 1 / -1; }
+  .stat-num {
+    font-family: 'Sora', sans-serif;
+    font-size: 42px; font-weight: 800;
+    color: var(--orange-light);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; }
+  .stat-desc { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 96px 48px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange-mid);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    color: var(--blue-deep);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .section-lead {
+    font-size: 17px; color: var(--gray-500);
+    line-height: 1.7; max-width: 600px;
+    margin-bottom: 56px;
+  }
+
+  /* ── WHO ARE WE ── */
+  #who { background: var(--off-white); }
+  .who-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+  }
+  .journey-list { display: flex; flex-direction: column; gap: 0; }
+  .journey-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--gray-100);
+    position: relative;
+  }
+  .journey-item:last-child { border-bottom: none; }
+  .j-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--orange-pale);
+    border: 2px solid var(--orange-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .j-content h4 { font-size: 15px; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px; }
+  .j-content p { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+
+  .who-right { padding-top: 8px; }
+  .mission-block {
+    background: var(--blue-deep);
+    border-radius: 20px;
+    padding: 40px 36px;
+    color: var(--white);
+    margin-bottom: 24px;
+    position: relative; overflow: hidden;
+  }
+  .mission-block::after {
+    content: '';
+    position: absolute; right: -30px; bottom: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(244,120,32,0.15);
+  }
+  .mission-block h3 {
+    font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--orange-glow); margin-bottom: 16px;
+  }
+  .mission-block p {
+    font-size: 18px; font-weight: 600; line-height: 1.6;
+    color: var(--white); position: relative; z-index: 1;
+  }
+  .services-row {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .service-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--white);
+    border: 1.5px solid var(--blue-light);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 13px; font-weight: 600; color: var(--blue-mid);
+  }
+  .service-chip span { font-size: 16px; }
+
+  /* ── TEAM ── */
+  #team { background: var(--white); }
+  .team-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+    margin-bottom: 48px;
+  }
+  .team-card {
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-100);
+    border-radius: 16px;
+    padding: 28px 20px 24px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .team-card:hover {
+    border-color: var(--orange-mid);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(244,120,32,0.12);
+  }
+  .team-card.manager { border-color: var(--orange-mid); background: var(--orange-pale); }
+  .team-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin: 0 auto 14px;
+  }
+  .team-card.manager .team-icon { background: var(--orange-mid); }
+  .team-card:not(.manager) .team-icon { background: var(--blue-light); }
+  .team-role {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--gray-500); margin-bottom: 6px;
+  }
+  .team-card.manager .team-role { color: var(--orange-deep); }
+  .team-title {
+    font-size: 14px; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px;
+  }
+  .team-count {
+    font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800;
+    color: var(--orange-mid);
+  }
+  .team-count-label { font-size: 11px; color: var(--gray-500); font-weight: 500; }
+
+  .total-banner {
+    background: var(--blue-deep);
+    border-radius: 16px;
+    padding: 32px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .total-banner h3 {
+    font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700;
+    color: var(--white);
+  }
+  .total-banner p { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+  .total-num {
+    font-family: 'Sora', sans-serif; font-size: 56px; font-weight: 900;
+    color: var(--orange-light); line-height: 1;
+  }
+
+  /* ── TIMELINE ── */
+  #timeline { background: var(--blue-deep); color: var(--white); }
+  #timeline .section-title { color: var(--white); }
+  #timeline .section-lead { color: rgba(255,255,255,0.6); }
+  #timeline .section-eyebrow { color: var(--orange-glow); }
+
+  .timeline-track {
+    position: relative;
+  }
+  .timeline-track::before {
+    content: '';
+    position: absolute; left: 88px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--orange-mid), rgba(244,120,32,0.1));
+  }
+  .tl-item {
+    display: flex; gap: 36px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-time {
+    width: 76px; flex-shrink: 0;
+    text-align: right;
+    padding-top: 14px;
+    font-family: 'Sora', sans-serif;
+    font-size: 12px; font-weight: 700;
+    color: var(--orange-glow);
+    letter-spacing: 0.04em;
+  }
+  .tl-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--orange-mid);
+    border: 3px solid var(--blue-deep);
+    box-shadow: 0 0 0 3px var(--orange-mid);
+    flex-shrink: 0; margin-top: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    position: relative; z-index: 1;
+  }
+  .tl-body {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .tl-body:hover { border-color: rgba(244,120,32,0.4); }
+  .tl-body h3 {
+    font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700;
+    color: var(--white); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tl-body h3 .emoji { font-size: 20px; }
+  .tl-tasks {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tl-tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.7);
+  }
+  .tl-tag.hot { background: rgba(224,90,0,0.25); border-color: rgba(244,120,32,0.4); color: var(--orange-glow); }
+
+  .incident-box {
+    background: rgba(224,90,0,0.15);
+    border: 1.5px solid rgba(244,120,32,0.5);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 14px;
+  }
+  .incident-box .q { font-size: 12px; font-weight: 700; color: var(--orange-glow); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .incident-box .msg { font-size: 14px; font-style: italic; color: rgba(255,255,255,0.8); }
+  .incident-box .resp { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; }
+
+  /* ── PERCEPTION ── */
+  #perception { background: var(--gray-50); }
+  .perception-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .perception-table thead tr {
+    background: var(--blue-deep);
+  }
+  .perception-table th {
+    padding: 20px 32px;
+    text-align: left; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--white);
+  }
+  .perception-table th:first-child { color: rgba(255,255,255,0.6); }
+  .perception-table th:last-child { color: var(--orange-glow); }
+  .perception-table tbody tr {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.15s;
+  }
+  .perception-table tbody tr:hover { background: var(--orange-pale); }
+  .perception-table td {
+    padding: 18px 32px; font-size: 15px;
+  }
+  .perception-table td:first-child { color: var(--gray-500); }
+  .perception-table td:last-child { color: var(--blue-deep); font-weight: 600; }
+  .vs-divider {
+    width: 60px; text-align: center;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+    color: var(--orange-mid); text-transform: uppercase;
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--white); }
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .skill-card {
+    border: 1.5px solid var(--gray-100);
+    border-radius: 16px;
+    padding: 28px 26px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--orange-mid), var(--blue-bright));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .skill-card:hover { border-color: var(--orange-light); box-shadow: 0 8px 24px rgba(244,120,32,0.1); }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon { font-size: 28px; margin-bottom: 14px; }
+  .skill-name { font-size: 16px; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; }
+  .skill-desc { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+
+  /* ── FUN FACTS ── */
+  #facts { background: var(--orange-pale); }
+  .facts-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .fact-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 28px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1.5px solid transparent;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .fact-card:hover { border-color: var(--orange-mid); transform: translateY(-3px); }
+  .fact-card .big {
+    font-family: 'Sora', sans-serif;
+    font-size: 52px; font-weight: 900;
+    color: var(--orange-deep); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .fact-card h4 { font-size: 15px; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; }
+  .fact-card p { font-size: 13px; color: var(--gray-500); }
+
+  /* ── BEST PART ── */
+  #best { background: var(--white); }
+  .best-list {
+    display: flex; flex-direction: column; gap: 16px;
+    max-width: 720px;
+  }
+  .best-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    background: var(--gray-50);
+    border-radius: 16px; padding: 24px 28px;
+    border-left: 4px solid var(--orange-mid);
+    transition: background 0.2s;
+  }
+  .best-item:hover { background: var(--orange-pale); }
+  .best-emoji { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .best-text { font-size: 16px; font-weight: 600; color: var(--blue-deep); line-height: 1.5; }
+
+  /* ── CLOSING ── */
+  #close {
+    background: var(--blue-deep);
+    text-align: center;
+    padding: 120px 48px;
+    position: relative; overflow: hidden;
+  }
+  #close::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 50% 50%, rgba(244,120,32,0.12) 0%, transparent 70%);
+  }
+  #close .content { position: relative; z-index: 1; }
+  .close-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--orange-glow); margin-bottom: 24px;
+  }
+  .close-quote {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.3;
+    max-width: 800px; margin: 0 auto 48px;
+  }
+  .close-quote .highlight { color: var(--orange-light); }
+  .team-badges {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  }
+  .badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--gray-900);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.4); }
+  footer .dot { color: var(--orange-mid); }
+
+  /* ── PROJECT SUPPORT ── */
+  #projects { background: var(--blue-deep); }
+  #projects .section-title { color: var(--white); }
+  #projects .section-lead { color: rgba(255,255,255,0.6); }
+  #projects .section-eyebrow { color: var(--orange-glow); }
+
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .project-card {
+    border-radius: 20px; overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    display: flex; flex-direction: column;
+  }
+  .project-card:hover {
+    border-color: var(--orange-mid);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+  }
+  .project-visual {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    flex-shrink: 0;
+  }
+  .project-visual.mc  { background: linear-gradient(135deg, #1a3a7a 0%, #0d2355 100%); }
+  .project-visual.loren { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%); }
+  .project-visual.csv { background: linear-gradient(135deg, #14532d 0%, #166534 100%); }
+
+  .project-visual svg { position: relative; z-index: 1; }
+  .project-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.08) 0%, transparent 70%);
+  }
+  .proj-logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; position: absolute; bottom: 16px; left: 20px;
+    color: rgba(255,255,255,0.5); z-index: 2;
+  }
+  .proj-icon-big {
+    font-size: 72px; z-index: 2; position: relative;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
+  }
+  .project-body { padding: 28px 24px 32px; flex: 1; display: flex; flex-direction: column; }
+  .project-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .mc .project-label { color: #60a5fa; }
+  .loren .project-label { color: var(--orange-glow); }
+  .csv .project-label { color: #4ade80; }
+  .project-name {
+    font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 800;
+    color: var(--white); margin-bottom: 6px; line-height: 1.2;
+  }
+  .project-fullname {
+    font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 16px; font-style: italic;
+  }
+  .project-desc {
+    font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7;
+    margin-bottom: 20px; flex: 1;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ptag {
+    padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600;
+    border: 1px solid;
+  }
+  .mc .ptag { background: rgba(96,165,250,0.12); border-color: rgba(96,165,250,0.3); color: #93c5fd; }
+  .loren .ptag { background: rgba(251,146,60,0.12); border-color: rgba(251,146,60,0.3); color: var(--orange-glow); }
+  .csv .ptag { background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.3); color: #86efac; }
+
+  /* ── TEAM PHOTOS ── */
+  #ourteam { background: var(--gray-50); }
+
+  .team-photo-intro {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+    align-items: center; margin-bottom: 56px;
+  }
+  .photo-group-banner {
+    background: var(--blue-deep);
+    border-radius: 24px; overflow: hidden;
+    height: 320px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photo-group-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(244,120,32,0.2) 0%, transparent 65%);
+  }
+  .group-photo-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    position: relative; z-index: 1;
+  }
+  .group-avatars {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 280px;
+  }
+  .g-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: transform 0.2s;
+  }
+  .g-avatar:hover { transform: scale(1.15); }
+  .upload-hint {
+    font-size: 12px; color: rgba(255,255,255,0.4); text-align: center;
+    background: rgba(255,255,255,0.07); border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 8px; padding: 8px 20px; margin-top: 8px;
+  }
+
+  .member-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .member-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-100);
+    border-radius: 20px; overflow: hidden;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .member-card:hover {
+    border-color: var(--orange-mid);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(244,120,32,0.12);
+  }
+  .member-photo {
+    height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .member-photo.color-1 { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); }
+  .member-photo.color-2 { background: linear-gradient(135deg, #FFF7ED, #FED7AA); }
+  .member-photo.color-3 { background: linear-gradient(135deg, #F0FDF4, #BBF7D0); }
+  .member-photo.color-4 { background: linear-gradient(135deg, #FDF4FF, #E9D5FF); }
+  .member-photo.color-5 { background: linear-gradient(135deg, #FFFBEB, #FDE68A); }
+  .member-photo.color-6 { background: linear-gradient(135deg, #FFF1F2, #FECDD3); }
+  .member-photo.color-7 { background: linear-gradient(135deg, #ECFEFF, #A5F3FC); }
+  .member-photo.color-8 { background: linear-gradient(135deg, #F0FDF4, #86EFAC); }
+  .avatar-big { font-size: 64px; }
+  .photo-upload-overlay {
+    position: absolute; inset: 0;
+    background: rgba(10,45,110,0.75);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+    cursor: pointer;
+  }
+  .member-card:hover .photo-upload-overlay { opacity: 1; }
+  .photo-upload-overlay span {
+    font-size: 12px; font-weight: 700; color: var(--white);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .member-info { padding: 18px 16px 20px; }
+  .member-name { font-size: 15px; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px; }
+  .member-pos {
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--orange-mid); margin-bottom: 8px;
+  }
+  .member-service {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--blue-light); border-radius: 100px;
+    padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--blue-mid);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .team-photo-intro { grid-template-columns: 1fr; }
+    .member-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .member-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 64px 24px; }
+    .hero { padding: 80px 24px 60px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .who-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .facts-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .facts-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Scroll animations */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">OPS <span>TEAM</span></div>
+  <ul class="nav-links">
+    <li><a href="#who">Who We Are</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#timeline">A Day in Life</a></li>
+    <li><a href="#perception">Reality Check</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#facts">Fun Facts</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#ourteam">Our Team</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Operations Team · 2025</div>
+      <h1 class="hero-title">
+        A Day in the Life of the<br>
+        <span class="accent">Operations Team</span>
+      </h1>
+      <p class="hero-sub">
+        What really happens behind successful customer projects?<br>
+        ศูนย์กลางระหว่างลูกค้า ทีมภายใน และระบบ
+      </p>
+      <a href="#who" class="hero-cta">Explore Our World →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">11</div>
+        <div class="stat-label">Team Members</div>
+        <div class="stat-desc">Across 4 roles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Service Lines</div>
+        <div class="stat-desc">MC · Loren · CSV</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Customer Reach</div>
+        <div class="stat-desc">TH → US → Global</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">No Two Days Alike</div>
+        <div class="stat-desc">Every day is different</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO ARE WE -->
+<section id="who">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 01</p>
+    <h2 class="section-title reveal">Who Are We?</h2>
+    <p class="section-lead reveal">เราไม่ได้แค่ดูแล Project — เรารับผิดชอบตลอด Customer Journey ตั้งแต่วันแรกจนถึงหลัง Go-Live</p>
+    <div class="who-grid">
+      <div class="journey-list reveal">
+        <div class="journey-item">
+          <div class="j-dot">📋</div>
+          <div class="j-content">
+            <h4>Project Planning</h4>
+            <p>วางแผนโครงการตั้งแต่ต้นจนจบ กำหนดขอบเขต ทรัพยากร และ timeline</p>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="j-dot">⚙️</div>
+          <div class="j-content">
+            <h4>Solution Implementation</h4>
+            <p>Configure และ implement ระบบให้ตรงกับความต้องการของลูกค้าแต่ละราย</p>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="j-dot">💬</div>
+          <div class="j-content">
+            <h4>Customer Communication</h4>
+            <p>เป็น Single Point of Contact ระหว่างลูกค้าและทีมภายใน</p>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="j-dot">✅</div>
+          <div class="j-content">
+            <h4>Testing & Validation</h4>
+            <p>ตรวจสอบ configuration และ validate deliverables ก่อน Go-Live</p>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="j-dot">🎓</div>
+          <div class="j-content">
+            <h4>Training & Enablement</h4>
+            <p>สอนและเตรียมความพร้อมให้ทีมของลูกค้าใช้งานระบบได้อย่างมั่นใจ</p>
+          </div>
+        </div>
+        <div class="journey-item">
+          <div class="j-dot">🚀</div>
+          <div class="j-content">
+            <h4>Go-Live & Post Go-Live Support</h4>
+            <p>ดูแลตั้งแต่วันเปิดตัว และ support ต่อเนื่องหลัง Go-Live</p>
+          </div>
+        </div>
+      </div>
+      <div class="who-right reveal">
+        <div class="mission-block">
+          <h3>Our Mission</h3>
+          <p>"We connect customers, technology, and people to turn ideas into successful solutions."</p>
+        </div>
+        <h4 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-500);margin-bottom:14px;">Service Support Lines</h4>
+        <div class="services-row">
+          <div class="service-chip"><span>🔷</span> Mastercontrol</div>
+          <div class="service-chip"><span>🔶</span> Loren</div>
+          <div class="service-chip"><span>📊</span> CSV</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 02</p>
+    <h2 class="section-title reveal">Meet the Team</h2>
+    <p class="section-lead reveal">11 คนที่ทำให้ทุก project เดินหน้าต่อ</p>
+    <div class="team-grid reveal">
+      <div class="team-card manager">
+        <div class="team-icon">👑</div>
+        <div class="team-role">Leadership</div>
+        <div class="team-title">Manager</div>
+        <div class="team-count">1</div>
+        <div class="team-count-label">person</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon">🗂️</div>
+        <div class="team-role">Project</div>
+        <div class="team-title">Solution Project Manager</div>
+        <div class="team-count">2</div>
+        <div class="team-count-label">people</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon">🔧</div>
+        <div class="team-role">Technical</div>
+        <div class="team-title">Solution Engineer</div>
+        <div class="team-count">2</div>
+        <div class="team-count-label">people</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon">📊</div>
+        <div class="team-role">Data</div>
+        <div class="team-title">CSV Specialist</div>
+        <div class="team-count">3</div>
+        <div class="team-count-label">people</div>
+      </div>
+      <div class="team-card">
+        <div class="team-icon">🎧</div>
+        <div class="team-role">Support</div>
+        <div class="team-title">Service Desk</div>
+        <div class="team-count">3</div>
+        <div class="team-count-label">people</div>
+      </div>
+    </div>
+    <div class="total-banner reveal">
+      <div>
+        <h3>Operations Team · Full Strength</h3>
+        <p>Implementation Software + Customer Support</p>
+      </div>
+      <div style="text-align:center">
+        <div class="total-num">11</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">Total Members</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 03</p>
+    <h2 class="section-title reveal">A Typical Day Timeline</h2>
+    <p class="section-lead reveal">No Two Days Are Ever the Same — แต่นี่คือสิ่งที่เกิดขึ้นในวันทั่วไป</p>
+    <div class="timeline-track">
+
+      <div class="tl-item reveal">
+        <div class="tl-time">8:00<br>AM</div>
+        <div class="tl-dot">☕</div>
+        <div class="tl-body">
+          <h3><span class="emoji">☕</span> Morning Inbox & Overnight Updates</h3>
+          <div class="tl-tasks">
+            <span class="tl-tag">Customer questions</span>
+            <span class="tl-tag">Support tickets</span>
+            <span class="tl-tag">Project updates</span>
+            <span class="tl-tag">Internal escalations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-time">9:00<br>AM</div>
+        <div class="tl-dot">📋</div>
+        <div class="tl-body">
+          <h3><span class="emoji">📋</span> Customer Project Meetings</h3>
+          <div class="tl-tasks">
+            <span class="tl-tag">Requirement discussions</span>
+            <span class="tl-tag">Design review</span>
+            <span class="tl-tag">Project status meetings</span>
+            <span class="tl-tag">Risk management</span>
+          </div>
+          <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:12px;">📍 Workshop กับลูกค้าในไทย และ US ในวันเดียวกัน</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-time">11:00<br>AM</div>
+        <div class="tl-dot">🔧</div>
+        <div class="tl-body">
+          <h3><span class="emoji">🔧</span> Solution Review & Configuration</h3>
+          <div class="tl-tasks">
+            <span class="tl-tag">Review business requirements</span>
+            <span class="tl-tag">Verify configurations</span>
+            <span class="tl-tag">Coordinate with technical teams</span>
+            <span class="tl-tag">Validate deliverables</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-time">2:00<br>PM</div>
+        <div class="tl-dot">🚨</div>
+        <div class="tl-body">
+          <h3><span class="emoji">🚨</span> Unexpected Issue Appears</h3>
+          <div class="incident-box">
+            <div class="q">Customer Reports:</div>
+            <div class="msg">"Users can't log in after SSO setup"</div>
+            <div class="resp">→ Gather info → Troubleshoot → Coordinate → Update customer</div>
+          </div>
+          <div class="tl-tasks" style="margin-top:12px;">
+            <span class="tl-tag hot">Gather information</span>
+            <span class="tl-tag hot">Troubleshoot</span>
+            <span class="tl-tag hot">Coordinate with Support Team</span>
+            <span class="tl-tag hot">Update customer</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-time">4:00<br>PM</div>
+        <div class="tl-dot">🎓</div>
+        <div class="tl-body">
+          <h3><span class="emoji">🎓</span> Customer Enablement</h3>
+          <div class="tl-tasks">
+            <span class="tl-tag">Training sessions</span>
+            <span class="tl-tag">UAT support</span>
+            <span class="tl-tag">Documentation review</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-time">7:00<br>PM</div>
+        <div class="tl-dot">🌍</div>
+        <div class="tl-body">
+          <h3><span class="emoji">🌍</span> Global Calls</h3>
+          <div class="tl-tasks">
+            <span class="tl-tag">US customers</span>
+            <span class="tl-tag">Regional teams</span>
+            <span class="tl-tag">Cross-functional discussions</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PERCEPTION -->
+<section id="perception">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 04</p>
+    <h2 class="section-title reveal">What People Think We Do<br>vs What We Actually Do</h2>
+    <p class="section-lead reveal">มุมมองที่ต่างกันระหว่างภายนอกและความเป็นจริง</p>
+    <table class="perception-table reveal">
+      <thead>
+        <tr>
+          <th>What People Think 🤔</th>
+          <th style="width:80px;text-align:center;">vs</th>
+          <th>What We Actually Do ✅</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Attend meetings</td>
+          <td style="text-align:center;color:var(--orange-mid);font-weight:800;">→</td>
+          <td>Solve problems in every meeting</td>
+        </tr>
+        <tr>
+          <td>Update project plans</td>
+          <td style="text-align:center;color:var(--orange-mid);font-weight:800;">→</td>
+          <td>Manage risks before they become crises</td>
+        </tr>
+        <tr>
+          <td>Send status reports</td>
+          <td style="text-align:center;color:var(--orange-mid);font-weight:800;">→</td>
+          <td>Keep every project moving forward</td>
+        </tr>
+        <tr>
+          <td>Support customers</td>
+          <td style="text-align:center;color:var(--orange-mid);font-weight:800;">→</td>
+          <td>Build long-term relationships & trust</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 05</p>
+    <h2 class="section-title reveal">The Skills We Use Every Day</h2>
+    <p class="section-lead reveal">ไม่ใช่แค่ Technical — ต้องใช้ทุก skill พร้อมกันในเวลาเดียว</p>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🗂️</div>
+        <div class="skill-name">Project Management</div>
+        <div class="skill-desc">วางแผน ติดตาม และควบคุมทุก deliverable ให้อยู่ใน scope, time, และ budget</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💬</div>
+        <div class="skill-name">Communication</div>
+        <div class="skill-desc">สื่อสารกับลูกค้า ทีมภายใน และ stakeholder ทุกระดับได้อย่างมีประสิทธิภาพ</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🧩</div>
+        <div class="skill-name">Problem Solving</div>
+        <div class="skill-desc">วิเคราะห์และแก้ปัญหาที่ไม่มีคำตอบสำเร็จรูป ในเวลาจำกัด</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🤝</div>
+        <div class="skill-name">Negotiation</div>
+        <div class="skill-desc">ต่อรองและหาจุดสมดุลระหว่างความต้องการของลูกค้าและทรัพยากรที่มี</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🌟</div>
+        <div class="skill-name">Customer Management</div>
+        <div class="skill-desc">สร้างและรักษาความสัมพันธ์กับลูกค้าตลอด customer journey</div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-name">Technical Understanding</div>
+        <div class="skill-desc">เข้าใจระบบเพียงพอที่จะ troubleshoot และสื่อสารกับ technical teams ได้</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUN FACTS -->
+<section id="facts">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 06</p>
+    <h2 class="section-title reveal">Fun Facts — Last Year We...</h2>
+    <p class="section-lead reveal">ตัวเลขที่อยู่เบื้องหลังความสำเร็จ</p>
+    <div class="facts-grid">
+      <div class="fact-card reveal">
+        <div class="big">XX</div>
+        <h4>Customers Supported</h4>
+        <p>ลูกค้าทั้งไทยและต่างประเทศ</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="big">XX</div>
+        <h4>Projects Managed</h4>
+        <p>ตั้งแต่ project เล็กถึง enterprise</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="big">XX</div>
+        <h4>Workshops Conducted</h4>
+        <p>ทั้ง onsite และ virtual</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="big">XX</div>
+        <h4>Training Sessions Delivered</h4>
+        <p>Enablement ลูกค้าทุกระดับ</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="big">XX</div>
+        <h4>Support Cases Resolved</h4>
+        <p>ตั้งแต่ปัญหาเล็กน้อยถึง critical</p>
+      </div>
+      <div class="fact-card reveal">
+        <div class="big">🌏</div>
+        <h4>Global Reach</h4>
+        <p>ทำงานข้ามเวลาโซน ทุกวัน</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEST PART -->
+<section id="best">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 07</p>
+    <h2 class="section-title reveal">The Best Part of the Job</h2>
+    <p class="section-lead reveal">สิ่งที่ทำให้เรามาทำงานทุกวัน</p>
+    <div class="best-list">
+      <div class="best-item reveal">
+        <div class="best-emoji">✨</div>
+        <div class="best-text">Seeing customers go live successfully — รู้สึก proud ทุกครั้งที่ระบบ Go-Live</div>
+      </div>
+      <div class="best-item reveal">
+        <div class="best-emoji">🧠</div>
+        <div class="best-text">Helping solve complex business challenges — ปัญหาที่ซับซ้อนทำให้เราแข็งแกร่งขึ้น</div>
+      </div>
+      <div class="best-item reveal">
+        <div class="best-emoji">🌍</div>
+        <div class="best-text">Working with teams across different countries — มุมมองที่หลากหลายทำให้งานดีขึ้น</div>
+      </div>
+      <div class="best-item reveal">
+        <div class="best-emoji">📚</div>
+        <div class="best-text">Learning something new every day — ไม่มีวันไหนที่หยุดเรียนรู้</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT SUPPORT -->
+<section id="projects">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 08</p>
+    <h2 class="section-title reveal">Project Support Lines</h2>
+    <p class="section-lead reveal">สามระบบที่เราเชี่ยวชาญ — แต่ละระบบมีความซับซ้อนและ impact ที่แตกต่างกัน</p>
+    <div class="projects-grid">
+
+      <!-- MASTERCONTROL -->
+      <div class="project-card mc reveal">
+        <div class="project-visual mc">
+          <div class="proj-icon-big">🔷</div>
+          <div class="proj-logo">Mastercontrol</div>
+        </div>
+        <div class="project-body">
+          <div class="project-label">Quality Management System</div>
+          <div class="project-name">MasterControl</div>
+          <div class="project-fullname">Enterprise Quality & Compliance Platform</div>
+          <div class="project-desc">
+            ระบบ QMS ระดับ Enterprise สำหรับอุตสาหกรรมที่ต้องการ Compliance สูง เช่น Life Sciences, Manufacturing และ Healthcare<br><br>
+            Operations Team ดูแลตั้งแต่ Implementation, Configuration ไปจนถึง Post Go-Live Support เพื่อให้ลูกค้าใช้งาน MasterControl ได้อย่างเต็มศักยภาพ
+          </div>
+          <div class="project-tags">
+            <span class="ptag">Document Control</span>
+            <span class="ptag">Training Management</span>
+            <span class="ptag">Audit Trail</span>
+            <span class="ptag">21 CFR Part 11</span>
+            <span class="ptag">Validation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOREN -->
+      <div class="project-card loren reveal">
+        <div class="project-visual loren">
+          <div class="proj-icon-big">🔶</div>
+          <div class="proj-logo">Loren</div>
+        </div>
+        <div class="project-body">
+          <div class="project-label">Business Process Platform</div>
+          <div class="project-name">Loren</div>
+          <div class="project-fullname">Workflow & Process Automation Solution</div>
+          <div class="project-desc">
+            แพลตฟอร์มสำหรับ Automate กระบวนการทางธุรกิจ ช่วยให้ลูกค้าลดงาน Manual และเพิ่มประสิทธิภาพการทำงาน<br><br>
+            ทีม Operations เข้าไปช่วย Map Business Process, Configure Workflow และ Train ผู้ใช้งานให้สามารถบริหารระบบได้ด้วยตัวเอง
+          </div>
+          <div class="project-tags">
+            <span class="ptag">Workflow Automation</span>
+            <span class="ptag">Process Mapping</span>
+            <span class="ptag">Integration</span>
+            <span class="ptag">User Training</span>
+            <span class="ptag">Reporting</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV -->
+      <div class="project-card csv reveal">
+        <div class="project-visual csv">
+          <div class="proj-icon-big">📊</div>
+          <div class="proj-logo">CSV</div>
+        </div>
+        <div class="project-body">
+          <div class="project-label">Computer System Validation</div>
+          <div class="project-name">CSV</div>
+          <div class="project-fullname">Computer System Validation Services</div>
+          <div class="project-desc">
+            บริการ Validate ระบบคอมพิวเตอร์ให้เป็นไปตาม Regulatory Standards เช่น FDA, GxP, และ ISO สำหรับอุตสาหกรรมที่ถูก Regulate อย่างเข้มงวด<br><br>
+            ทีม CSV ของเราสร้างและรวบรวม Validation Documentation ครบชุด — IQ, OQ, PQ — เพื่อให้ลูกค้าผ่าน Audit ได้อย่างมั่นใจ
+          </div>
+          <div class="project-tags">
+            <span class="ptag">IQ / OQ / PQ</span>
+            <span class="ptag">Risk Assessment</span>
+            <span class="ptag">FDA Compliance</span>
+            <span class="ptag">GxP</span>
+            <span class="ptag">Audit Support</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OUR TEAM PHOTOS -->
+<section id="ourteam">
+  <div class="container">
+    <p class="section-eyebrow reveal">Section 09</p>
+    <h2 class="section-title reveal">Meet Our People</h2>
+    <p class="section-lead reveal">11 คนที่อยู่เบื้องหลังทุก project ที่ประสบความสำเร็จ</p>
+
+    <!-- Group Photo Banner -->
+    <div class="team-photo-intro reveal">
+      <div class="photo-group-banner">
+        <div class="group-photo-placeholder">
+          <div class="group-avatars">
+            <div class="g-avatar">👑</div>
+            <div class="g-avatar">🗂️</div>
+            <div class="g-avatar">🗂️</div>
+            <div class="g-avatar">🔧</div>
+            <div class="g-avatar">🔧</div>
+            <div class="g-avatar">📊</div>
+            <div class="g-avatar">📊</div>
+            <div class="g-avatar">📊</div>
+            <div class="g-avatar">🎧</div>
+            <div class="g-avatar">🎧</div>
+            <div class="g-avatar">🎧</div>
+          </div>
+          <div class="upload-hint">📷 แทนที่ด้วยรูปถ่ายทีม</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:var(--blue-deep);line-height:1.2;margin-bottom:16px;">
+          One Team,<br>Many Strengths
+        </h3>
+        <p style="font-size:16px;color:var(--gray-500);line-height:1.8;margin-bottom:24px;">
+          เราเป็นทีมที่หลากหลาย — ทั้ง Project Manager, Engineer, Data Specialist และ Support — ทุกคนทำงานร่วมกันเพื่อเป้าหมายเดียวกัน: ให้ลูกค้าประสบความสำเร็จ
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <div style="background:var(--orange-pale);border:1.5px solid var(--orange-light);border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--orange-deep);">
+            👑 1 Manager
+          </div>
+          <div style="background:var(--blue-light);border:1.5px solid #93c5fd;border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--blue-mid);">
+            🗂️ 2 Solution PM
+          </div>
+          <div style="background:var(--blue-light);border:1.5px solid #93c5fd;border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;color:var(--blue-mid);">
+            🔧 2 Solution Engineer
+          </div>
+          <div style="background:#F0FDF4;border:1.5px solid #86efac;border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;color:#166534;">
+            📊 3 CSV Specialist
+          </div>
+          <div style="background:#FDF4FF;border:1.5px solid #d8b4fe;border-radius:100px;padding:8px 18px;font-size:13px;font-weight:600;color:#7e22ce;">
+            🎧 3 Service Desk
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Individual Member Cards -->
+    <div class="member-grid">
+
+      <div class="member-card reveal">
+        <div class="member-photo color-2">
+          <div class="avatar-big">👑</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Manager</div>
+          <div class="member-name">Team Lead</div>
+          <div class="member-service">🔷 MC · 🔶 Loren · 📊 CSV</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-1">
+          <div class="avatar-big">🗂️</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Solution Project Manager</div>
+          <div class="member-name">PM 1</div>
+          <div class="member-service">🔷 MasterControl</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-1">
+          <div class="avatar-big">🗂️</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Solution Project Manager</div>
+          <div class="member-name">PM 2</div>
+          <div class="member-service">🔶 Loren</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-4">
+          <div class="avatar-big">🔧</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Solution Engineer</div>
+          <div class="member-name">Engineer 1</div>
+          <div class="member-service">🔷 MasterControl</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-4">
+          <div class="avatar-big">🔧</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Solution Engineer</div>
+          <div class="member-name">Engineer 2</div>
+          <div class="member-service">🔶 Loren</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-3">
+          <div class="avatar-big">📊</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">CSV Specialist</div>
+          <div class="member-name">CSV 1</div>
+          <div class="member-service">📊 CSV Validation</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-3">
+          <div class="avatar-big">📊</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">CSV Specialist</div>
+          <div class="member-name">CSV 2</div>
+          <div class="member-service">📊 CSV Validation</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-3">
+          <div class="avatar-big">📊</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">CSV Specialist</div>
+          <div class="member-name">CSV 3</div>
+          <div class="member-service">📊 CSV Validation</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-6">
+          <div class="avatar-big">🎧</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Service Desk</div>
+          <div class="member-name">Support 1</div>
+          <div class="member-service">🔷 MC · 🔶 Loren</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-6">
+          <div class="avatar-big">🎧</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Service Desk</div>
+          <div class="member-name">Support 2</div>
+          <div class="member-service">🔷 MC · 📊 CSV</div>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo color-6">
+          <div class="avatar-big">🎧</div>
+          <div class="photo-upload-overlay"><span>+ Add Photo</span></div>
+        </div>
+        <div class="member-info">
+          <div class="member-pos">Service Desk</div>
+          <div class="member-name">Support 3</div>
+          <div class="member-service">🔶 Loren · 📊 CSV</div>
+        </div>
+      </div>
+
+    </div>
+    <p style="text-align:center;margin-top:32px;font-size:13px;color:var(--gray-500);">
+      💡 Hover บน card เพื่อแทนที่ด้วยรูปจริงของสมาชิกแต่ละคน
+    </p>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="close">
+  <div class="content">
+    <div class="close-label reveal">Operations in One Sentence</div>
+    <div class="close-quote reveal">
+      We make sure <span class="highlight">projects move forward</span>,<br>
+      customers stay <span class="highlight">supported</span>,<br>
+      and solutions deliver <span class="highlight">real value</span>.
+    </div>
+    <div class="team-badges reveal">
+      <div class="badge">👑 Manager · 1</div>
+      <div class="badge">🗂️ Solution PM · 2</div>
+      <div class="badge">🔧 Solution Engineer · 2</div>
+      <div class="badge">📊 CSV · 3</div>
+      <div class="badge">🎧 Service Desk · 3</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Operations Team <span class="dot">●</span> Mastercontrol · Loren · CSV</p>
+  <p>11 members <span class="dot">●</span> Always moving forward</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
