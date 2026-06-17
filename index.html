@@ -688,37 +688,43 @@
 </section>
 
 <!-- TEAM PHOTO -->
-  <section id="team-photo">
+<section id="team-photo">
 
   <div class="section-inner">
 
-    <div class="section-eyebrow" data-th="รูปทีมของเรา" data-en="Meet Our Team">
-      รูปทีมของเรา
-    </div>
+    <div class="section-eyebrow">รูปทีมของเรา</div>
 
-    <h2 class="section-title" data-th="คน 11 คน หัวใจเดียวกัน" data-en="11 People, <span>One Heart</span>">
-      <span data-th="คน 11 คน" data-en="11 People">คน 11 คน</span> หัวใจเดียวกัน
+    <h2 class="section-title">
+      <span>คน 11 คน</span> หัวใจเดียวกัน
     </h2>
 
-    <p class="section-lead" data-th="ทีมที่หลากหลายแต่มุ่งมั่นไปในทิศทางเดียวกัน — สร้างความสําเร็จให้ลูกค้า" data-en="A diverse team united by one purpose — creating success for our customers.">
+    <p class="section-lead">
       ทีมที่หลากหลายแต่มุ่งมั่นไปในทิศทางเดียวกัน — สร้างความสําเร็จให้ลูกค้า
     </p>
 
-    <div class="fade-in">
+    <div class="slider-wrapper">
 
-      <div class="photo-wrapper" id="photoWrapper">
+      <button class="slider-btn prev" onclick="moveSlide(-1)">❮</button>
 
-        <img id="team-img-display" src="images/team-photo.jpg" alt="Operations Team Photo">
+      <div class="slider">
+
+        <img class="slide active" src="images/team1.jpg" alt="Team 1">
+        <img class="slide" src="images/team2.jpg" alt="Team 2">
+        <img class="slide" src="images/team3.jpg" alt="Team 3">
 
       </div>
 
-      <p class="photo-caption" data-th="ทีม Operations — ผู้เชี่ยวชาญด้าน MasterControl, Loren & CSV" data-en="Operations Team — MasterControl, Loren & CSV Specialists">
-        ทีม Operations — ผู้เชี่ยวชาญด้าน MasterControl, Loren & CSV
-      </p>
+      <button class="slider-btn next" onclick="moveSlide(1)">❯</button>
 
     </div>
 
+    <p class="photo-caption">
+      ทีม Operations — MasterControl, Loren & CSV Specialists
+    </p>
+
   </div>
+
+</section>
 
 
 <!-- JOURNEY -->
